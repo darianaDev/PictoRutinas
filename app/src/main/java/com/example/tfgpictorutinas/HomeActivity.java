@@ -75,7 +75,11 @@ public class HomeActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
                     HashMap dataHash = (HashMap) data.getValue();
+<<<<<<< Updated upstream
                     Rutina aux = new Rutina((Long)dataHash.get("idRutina"),(String)dataHash.get("nombre") ,(String)dataHash.get("foto"));
+=======
+                    Rutina aux = new Rutina((Long)dataHash.get("idRutina"),(String)dataHash.get("nombre") ,(String)dataHash.get("foto"), (String)dataHash.get("repeticiones"),(String) dataHash.get("hora_ini"));
+>>>>>>> Stashed changes
                     listaRutinas.add(aux);
                 }
                 adapter = new Adaptador(HomeActivity.this, listaRutinas);
@@ -87,6 +91,27 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+<<<<<<< Updated upstream
+=======
+        myRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<Rutina> lR = new ArrayList(30);
+                for(DataSnapshot data: snapshot.getChildren()){
+                    HashMap dataHash = (HashMap) data.getValue();
+                    Rutina aux = new Rutina((Long)dataHash.get("idRutina"),(String)dataHash.get("nombre") ,(String)dataHash.get("foto"), (String)dataHash.get("repeticiones"),(String) dataHash.get("hora_ini"));
+                    lR.add(aux);
+                }
+                if (lR.size() > 0) autoincrementid = ((Rutina)lR.get(lR.size()-1)).getIdRutina();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+>>>>>>> Stashed changes
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -94,10 +119,20 @@ public class HomeActivity extends AppCompatActivity {
                 View str = ((LinearLayout)arg1).getChildAt(1);
                 int id = ((TextView)str).getId();
                 String texto = ((TextView)str).getText().toString();
+<<<<<<< Updated upstream
+=======
+                String repeticiones = aux.getRepeticiones();
+                String hora_ini = aux.getHora_ini();
+>>>>>>> Stashed changes
 
                 Intent i = new Intent(HomeActivity.this, RutinaDef.class);
                 i.putExtra("idRutina", id);
                 i.putExtra("nombre", texto);
+<<<<<<< Updated upstream
+=======
+                i.putExtra("hora_ini",hora_ini);
+                i.putExtra("repeticiones",repeticiones);
+>>>>>>> Stashed changes
                 startActivity(i);
             }
         });
@@ -110,7 +145,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+<<<<<<< Updated upstream
                 Rutina a = new Rutina(listaRutinas.size()+1,"Rutina" + (listaRutinas.size()+1), "" + R.drawable.alumno); //@todo Revisar
+=======
+                Rutina a = new Rutina(autoincrementid+1,"Rutina" + (autoincrementid+1), "" + R.drawable.alumno, "",""); //@todo Revisar
+>>>>>>> Stashed changes
                 listaRutinas.add(a);
                 myRef.push().setValue(a);
                 list.setAdapter(adapter);

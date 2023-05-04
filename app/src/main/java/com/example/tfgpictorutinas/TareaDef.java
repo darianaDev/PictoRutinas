@@ -60,7 +60,13 @@ public class TareaDef extends AppCompatActivity {
 
         extras = getIntent().getExtras();
         picto = findViewById(R.id.fotoTareaDef);
+<<<<<<< Updated upstream
         hora = findViewById(R.id.tiempoTareaDef);
+=======
+
+        hora_ini = findViewById(R.id.tiempoTareaDef_ini);
+
+>>>>>>> Stashed changes
         et_descripcion = findViewById(R.id.EtDescripcionTareaDef);
         setHoraActual();
 
@@ -72,7 +78,117 @@ public class TareaDef extends AppCompatActivity {
                 Intent i = new Intent(TareaDef.this, AraasacPics.class);
                 startActivity(i);
             }
+<<<<<<< Updated upstream
         });*/
+=======
+        });
+    }
+
+    private void showdata() {
+        extras = getIntent().getExtras();
+
+        idRutina = extras.getLong("idRutina");
+        idTarea = extras.getLong("idTarea");
+
+        String tarea_picto = extras.getString("tarea_picto");
+        String tarea_descripcion = extras.getString("tarea_descripcion");
+        String tarea_hora_ini = extras.getString("tarea_hora_ini");
+        String tarea_hora_end = extras.getString("tarea_hora_end");
+
+
+        byte[] imageAsBytes = Base64.decode(tarea_picto, Base64.DEFAULT);
+        picto.setImageBitmap((BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)));
+
+        hora_ini.setText(tarea_hora_ini);
+        hora_end.setText(tarea_hora_end);
+
+        et_descripcion.setText(tarea_descripcion);
+        btn_actualizar.setText("Actualizar");
+
+    }
+    private void updateTarea(ImageView picto, TextView hora_end, TextView hora_ini, EditText et_descripcion){
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("idTarea",idTarea);
+        map.put("nombreTarea",et_descripcion.getText().toString());
+        map.put("fotoTarea",getBitstreamPicto( picto));
+        map.put("hora_ini",hora_ini.getText().toString());
+        map.put("hora_end",hora_end.getText().toString());
+        map.put("rutina_id",idRutina);
+
+        mDataBase.child("pictorutinas/tareas").child(String.valueOf(idTarea)).updateChildren(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(TareaDef.this,"Tarea actualizada",Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(TareaDef.this, EditorTareas.class);
+                        startActivity(i);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(TareaDef.this,"ERROR",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+    }
+    private void  guardardataNew(ImageView picto, TextView hora_end, TextView hora_ini, EditText et_descripcion){
+        String tarea_picto= getBitstreamPicto( picto);
+        String tarea_hora_ini= hora_ini.getText().toString();
+        String tarea_hora_end= hora_end.getText().toString();
+        String tarea_descripcion= et_descripcion.getText().toString();
+        if(tarea_picto.isEmpty() ||  tarea_hora_ini.isEmpty() || tarea_hora_end.isEmpty() || tarea_descripcion.isEmpty() ){
+            String error = "";
+            if (tarea_picto.isEmpty())
+                error="PICTOGRAMA";
+            if (tarea_picto.isEmpty())
+                error="HORA DE INICIO";
+            if (tarea_picto.isEmpty())
+                error="HORA DE FINALIZACIÓN";
+            if (tarea_picto.isEmpty())
+                error="DESCRIPCION";
+            if (tarea_picto.isEmpty())
+                error="RUTINA";
+            Toast.makeText(this,"Falta"+error+" datos por definir",Toast.LENGTH_SHORT).show();
+
+        }else {
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("idTarea",idTarea);
+            map.put("nombreTarea",et_descripcion.getText().toString());
+            map.put("fotoTarea",getBitstreamPicto( picto));
+            map.put("hora_ini",hora_ini.getText().toString());
+            map.put("hora_end",hora_end.getText().toString());
+            map.put("rutina_id",idRutina);
+
+            mDataBase.child("pictorutinas/tareas").child(String.valueOf(idTarea))
+                    .setValue(map)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(TareaDef.this,"Tarea guardada",Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(TareaDef.this, EditorTareas.class);
+                            i.putExtra("idRutina",idRutina);
+                            startActivity(i);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(TareaDef.this,"ERROR",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+    private String getBitstreamPicto(ImageView picto){
+        Bitmap bitmap = ((BitmapDrawable) picto.getDrawable()).getBitmap();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        String pic = Base64.encodeToString(byteArray,Base64.DEFAULT);
+        return pic;
+>>>>>>> Stashed changes
     }
     private void setHoraActual() {
         Calendar calendar = Calendar.getInstance();
@@ -90,17 +206,24 @@ public class TareaDef extends AppCompatActivity {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog,new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-                String am_pm = "AM";
-                if(hour>12){
-                    am_pm = "PM";
-                    hour = hour-12;
+                String hora;
+                if (hour == 1){
+                    hora= hour+" hora y "+minute+"minutos";
+                }else if(hour > 1){
+                    hora= hour+" horas y "+minute+"minutos";
+                }else{
+                    hora= minute+" minutos";
                 }
+<<<<<<< Updated upstream
                 //Showing the picked value in the textView
                 //hora.setText(String.valueOf(hour)+ ":"+String.valueOf(minute)+" "+am_pm);
                 String time = hour+ ":"+minute+" "+am_pm;
                 hora.setText(time);
+=======
+                hour_.setText(hora);
+>>>>>>> Stashed changes
             }
-        }, 12, 30, false);
+        }, 00, 30, true);
 
         timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

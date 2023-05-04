@@ -27,6 +27,22 @@
         android:textSize="15sp"
         android:layout_below="@id/fotoTareaDef"
         tools:ignore="MissingConstraints" />
+<<<<<<< Updated upstream
+=======
+    <TextView
+        android:id="@+id/textotiempo_ini"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:padding="12dp"
+        android:text="Duracion tarea:"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/grey"
+        android:textSize="15sp"
+        android:layout_below="@id/EtDescripcionTareaDef"
+        tools:ignore="MissingConstraints" />
+
+>>>>>>> Stashed changes
 
     <EditText
         android:id="@+id/EtDescripcionTareaDef"
@@ -54,7 +70,11 @@
         android:inputType="time"
         android:onClick="abrirTimePicker"
         android:textColor="@color/grey"
+<<<<<<< Updated upstream
         android:textSize="50dp"
+=======
+        android:textSize="25dp"
+>>>>>>> Stashed changes
         tools:ignore="MissingConstraints" />
 
 
@@ -63,6 +83,10 @@
         android:id="@+id/idBtActualizarTarea"
         android:layout_width="240dp"
         android:layout_height="55dp"
+<<<<<<< Updated upstream
+=======
+        android:layout_below="@id/tiempoTareaDef_ini"
+>>>>>>> Stashed changes
         android:layout_centerHorizontal="true"
         android:text="Actualizar"
         android:textSize="15dp"
